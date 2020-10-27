@@ -18,7 +18,7 @@ const routes = () => {
             title: 'Almanara'
 
           }}
-        name='Principal' component={Principal}
+        name='Principal' component={Pesquisa}
       />
 
       <AppStack.Screen

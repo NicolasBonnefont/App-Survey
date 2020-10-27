@@ -19,7 +19,6 @@ const Principal = () => {
         as condições de saúde dos colaboradores e aferição da temperatura
         corporal.</Texto>
 
-
         <Btn onPress={()=> navigation.navigate('Pesquisa')}>
           <BtnText> INICIAR PESQUISA AGORA ! </BtnText>
           <Feather name='arrow-right' size={25} color='#fff' style={{marginLeft:10}}/>
