@@ -2,64 +2,84 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import api from '../../../services/api'
 import { CheckBox } from 'react-native-elements'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const Gerentes = ({ codFilial, clean }) => {
 
-const Gerentes = () => {
   const [gerentes, setGerentes] = useState([])
-  const [teste, setTeste] = useState('ola')
-
+  const [teste, setTeste] = useState('')
+  
 
   useEffect(() => {
-    async function loadGerentes() {
-      await api.get('/gerente/18')
-        .then(response => {
-          setGerentes(response.data.map(r => ({ ...r, check: false })))
-        })
+
+    if (codFilial) {
+    
+      async function loadGerentes() {
+
+        await api.get(`/gerente/${codFilial}`)
+          .then(async (response) => {
+            setGerentes(response.data.map((e) => (e.CodFilial === codFilial ? { ...e, Check: true } : { ...e, Check: false })))
+            await AsyncStorage.setItem('Emails', '')
+            await AsyncStorage.setItem('Emails', JSON.stringify(response.data.map((e) => (e.CodFilial === codFilial ? { ...e, Check: true } : { ...e, Check: false }))))
+          })
+      }
+
+      loadGerentes()
+
+    }else{
+      async function loadGerentes2() {
+
+        await api.get(`/gerente/99999`)
+          .then(async (response) => {
+            setGerentes(response.data.map((e) => (e.CodFilial === codFilial ? { ...e, Check: true } : { ...e, Check: false })))
+            await AsyncStorage.setItem('Emails', '')
+            await AsyncStorage.setItem('Emails', JSON.stringify(response.data.map((e) => (e.CodFilial === codFilial ? { ...e, Check: true } : { ...e, Check: false }))))
+          })
+      }
+
+      loadGerentes2()
     }
 
-    function verificaTurnante(){
-      let dados = gerentes
+  }, codFilial)
 
-      dados.map(r => { r.Turnante == 'S'? r.check = true: r.check=false})
-     
-      setGerentes(dados)
+  // QUANDO É ALTERADO A MATRICULA, DISPARA A FUNÇÃO ABAIXO
+
+  async function mudacheck(id) {
+    setTeste([])
+
+    if (gerentes[id].Check == false || gerentes[id].Check == 'false') {
+      gerentes[id].Check = !gerentes[id].Check
+      await AsyncStorage.removeItem('Emails')
+      await AsyncStorage.setItem('Emails', JSON.stringify(gerentes))
+      setGerentes(gerentes)
+      setTeste([])
+
+    } else if (gerentes[id].Check == true || gerentes[id].Check == 'true') {
+      gerentes[id].Check = !gerentes[id].Check
+      setGerentes(gerentes)
+      await AsyncStorage.removeItem('Emails')
+      await AsyncStorage.setItem('Emails', JSON.stringify(gerentes))
+      setTeste([])
+
     }
-    loadGerentes()
-    verificaTurnante()
-  }, [])
-
-  function mudaCheck(id) {
-
-    let dados = gerentes
-
-    if(dados[id].check === false){
-      dados[id].check = true
-      setTeste('TRUE')
-      setGerentes(dados)
-    }else if(dados[id].check === true){
-      dados[id].check = false
-      setTeste('FALSE')
-      setGerentes(dados)
-    }
-    setGerentes(dados)
-   
+    setTeste([])
   }
 
   return (
     <View>
 
       {gerentes.map((gerente, index) =>
-        (<View key={gerente.Codigo} style={{ flexDirection: 'row', alignItems: 'center' }}>
-          
+        (<View key={gerente.index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+
           <CheckBox
-            checkedColor='red'            
+            checkedColor='red'
             title={gerente.Nome}
-            checked={gerente.check}
-            onPress={()=>mudaCheck(index)}  
+            checked={gerente.Check ? true : false}
+            onPress={() => mudacheck(index)}
           />
-        
+
         </View>)
-        
+
       )}
 
     </View>

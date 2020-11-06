@@ -9,7 +9,7 @@ align-items:center;
 `;
 
 export const ContainerForm = styled.View`
-margin-top:60%;
+margin-top:30%;
 width:90%;
 height:350px;
 background-color:#fff;
@@ -49,4 +49,8 @@ align-items:center;
 export const TxtBtn = styled.Text`
 color:#fff;
 font-weight:bold;
+`
+
+export const Img = styled.Image`
+margin-bottom: -25%;
 `

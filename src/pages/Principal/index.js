@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View } from 'react-native';
 import {Feather} from '@expo/vector-icons/'
 import { Background, Card, Titulo, SubTitulo, Texto, Btn, BtnText } from './styles';
 import { useNavigation } from '@react-navigation/native'
+import { AuthContext } from '../../contexts/auth'
 const Principal = () => {
+
+  const { logout } = useContext(AuthContext)
 
   const navigation = useNavigation()
   return (
@@ -22,6 +25,10 @@ const Principal = () => {
         <Btn onPress={()=> navigation.navigate('Pesquisa')}>
           <BtnText> INICIAR PESQUISA AGORA ! </BtnText>
           <Feather name='arrow-right' size={25} color='#fff' style={{marginLeft:10}}/>
+        </Btn>
+        <Btn style={{backgroundColor:''}} onPress={()=>logout()}>
+          <BtnText style={{color:'red'}}> Deslogar </BtnText>
+          <Feather name='log-out' size={25} color='red' style={{marginLeft:10}}/>
         </Btn>
 
       </Card>

@@ -28,6 +28,11 @@ const AuthProvider = ({ children }) => {
   async function login(usuario, senha) {
     setAuthLoading(true)
     Keyboard.dismiss()
+    if(usuario==''|| senha ==''){
+      alert('Preencha todos os Campos !')
+      setAuthLoading(false)
+      return
+    }
     await api.post('/login', {
       Usuario: usuario,
       Senha: senha
@@ -38,6 +43,7 @@ const AuthProvider = ({ children }) => {
         setLogado(true)
       })
       .catch(async function(error){
+        alert('Problema na autenticação !')
         await AsyncStorage.clear()
         setAuthLoading(false)
         setLogado(false)
@@ -45,9 +51,14 @@ const AuthProvider = ({ children }) => {
       })
   }
 
+ async function logout(){
+  await AsyncStorage.clear()
+  setLogado(false)
+ }
+
   return (
     <AuthContext.Provider
-      value={{ login, authLoading, logado }}>
+      value={{ login, authLoading, logado,logout }}>
       {children}
     </AuthContext.Provider>
   );

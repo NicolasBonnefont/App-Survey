@@ -9,17 +9,17 @@ import AuthProvider from './src/contexts/auth'
 
 export default function App() {
   return (
-   
-      <NavigationContainer>
 
-        <AuthProvider>
+    <NavigationContainer>
+      <StatusBar style='light' />
+      <AuthProvider>
 
-          <Routes />
+        <Routes />
 
-        </AuthProvider>
+      </AuthProvider>
 
-      </NavigationContainer>
- 
+    </NavigationContainer>
+
 
   );
 }

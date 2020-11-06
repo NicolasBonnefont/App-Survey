@@ -31,6 +31,7 @@ export const Titulo = styled.Text`
   margin-left:15px;
   font-size:16px;
   font-weight:600;
+  font-weight:bold;
 `;
 
 export const SubTitulo = styled.Text`
